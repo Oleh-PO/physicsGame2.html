@@ -39,18 +39,22 @@ var bulet = function (x, y, color, speed) {
 	this.y = y + (pxt / 2);
 	this.color = color;
 	this.speed = speed;
+	this.fallSpeed = 0;
 	this.arc = pxt / 100 * 23;
 	this.shot = false;
+	this.length = 0;
 };
 enemy.prototype.draw = function () {
 	ctx.fillStyle = this.color;
 	ctx.fillRect(this.x, this.y, pxt, pxt);
 };
 bulet.prototype.draw = function () {
-	ctx.fillStyle = this.color;
-	ctx.beginPath();
-	ctx.arc(this.x,this.y, this.arc, 0, Math.PI * 2, false);
-	ctx.fill();
+	if (this.length > 0) {
+		ctx.fillStyle = this.color;
+		ctx.beginPath();
+		ctx.arc(this.x,this.y, this.arc, 0, Math.PI * 2, false);
+		ctx.fill();
+	};
 };
 var grafic = function () {
 	ctx.fillStyle = "Red";
@@ -67,7 +71,7 @@ enemy.prototype.blockUP = function () {
 enemy.prototype.blockLeft = function () {
 	this.xSpeed = 0;
 	this.x += (Math.floor(this.x / pxt) * pxt + pxt) - this.x;
-	console.log("LEFT");
+	// console.log("LEFT");
 };
 enemy.prototype.blockRight = function () {
 	this.xSpeed = 0;
@@ -75,51 +79,51 @@ enemy.prototype.blockRight = function () {
 };
 enemy.prototype.coliderTest = function (name) {
 	if (word[String(this.coliderY1) + "_" + String(Math.floor(this.x / pxt))] === name && word[String(this.coliderY1) + "_" + String(this.coliderX2)]) {
-		console.log("down");
+		// console.log("down");
 		return "down";
 	}
 	else if (word[String(this.coliderY1) + "_" + String(Math.floor(this.coliderX2))] === "wall" && word[String(this.coliderY1) + "_" + String(this.coliderX3)]) {
-		console.log("down1");
+		// console.log("down1");
 		return "down";
 	}
 	else if (word[String(this.coliderY1) + "_" + String(Math.floor(this.coliderX3))] === "wall" && word[String(this.coliderY1) + "_" + String(this.coliderX1)]) {
-		console.log("down2");
+		// console.log("down2");
 		return "down";
 	}
 	else if (word[String(Math.floor(this.y / pxt)) + "_" + String(Math.floor(this.x / pxt))] === "wall" && word[String(Math.floor(this.y / pxt)) + "_" + String(this.coliderX2)]) {
-		console.log("up");
+		// console.log("up");
 		return "up";
 	}
 	else if (word[String(Math.floor(this.y / pxt)) + "_" + String(Math.floor(this.coliderX2))] === "wall" && word[String(Math.floor(this.y / pxt)) + "_" + String(this.coliderX3)]) {
-		console.log("up1");
+		// console.log("up1");
 		return "up";
 	}
 	else if (word[String(Math.floor(this.y / pxt)) + "_" + String(Math.floor(this.coliderX3))] === "wall" && word[String(Math.floor(this.y / pxt)) + "_" + String(this.coliderX1)]) {
-		console.log("up2");
+		// console.log("up2");
 		return "up";
 	}
 	else if (word[String(Math.floor(this.y / pxt)) + "_" + String(Math.floor(this.x / pxt))] === "wall" && word[String(this.coliderY2) + "_" + String(Math.floor(this.x / pxt))] === "wall") {
-		console.log("LEFT");
+		// console.log("LEFT");
 		return "left";
 	}
 	else if (word[String(this.coliderY2) + "_" + String(Math.floor(this.x / pxt))] === "wall" && word[String(this.coliderY3) + "_" + String(Math.floor(this.x / pxt))] === "wall") {
-		console.log("LEFT1");
+		// console.log("LEFT1");
 		return "left";
 	}
 	else if (word[String(this.coliderY3) + "_" + String(Math.floor(this.x / pxt))] === "wall" && word[String(this.coliderY1) + "_" + String(Math.floor(this.x / pxt))] === "wall") {
-		console.log("LEFT2");
+		// console.log("LEFT2");
 		return "left";
 	}
 	else if (word[String(Math.floor(this.y / pxt)) + "_" + String(this.coliderX1)] === "wall" && word[String(this.coliderY2) + "_" + String(this.coliderX1)] === "wall") {
-		console.log("RIGHT");
+		// console.log("RIGHT");
 		return "right";
 	}
 	else if (word[String(this.coliderY2) + "_" + String(this.coliderX1)] === "wall" && word[String(this.coliderY3) + "_" + String(this.coliderX1)] === "wall") {
-		console.log("RIGHT1");
+		// console.log("RIGHT1");
 		return "right";
 	}
 	else if (word[String(this.coliderY3) + "_" + String(this.coliderX1)] === "wall" && word[String(this.coliderY1) + "_" + String(this.coliderX1)] === "wall") {
-		console.log("RIGHT2");
+		// console.log("RIGHT2");
 		return "right";
 	};
 };
@@ -157,59 +161,59 @@ enemy.prototype.colider = function () {
 	this.coliderY3 = Math.floor(this.coliderY3 / pxt);
 	// console.log(this.coliderX1 + "X1 " + this.coliderX2 + "X2 " + this.coliderX3 + "X3 ");
 	if (word[String(this.coliderY1) + "_" + String(Math.floor(this.x / pxt))] === "wall" && word[String(this.coliderY1) + "_" + String(this.coliderX2)] === "wall") {
-		console.log("down");
+		// console.log("down");
 		this.jump = true;
 		this.blockDowm();
 	}
 	else if (word[String(this.coliderY1) + "_" + String(Math.floor(this.coliderX2))] === "wall" && word[String(this.coliderY1) + "_" + String(this.coliderX3)] === "wall") {
-		console.log("down1");
+		// console.log("down1");
 		this.blockDowm();
 		this.jump = true;
 	}
 	else if (word[String(this.coliderY1) + "_" + String(Math.floor(this.coliderX3))] === "wall" && word[String(this.coliderY1) + "_" + String(this.coliderX1)] === "wall") {
-		console.log("down2");
+		// console.log("down2");
 		this.blockDowm();
 		this.jump = true;
 	}
 	else if (word[String(Math.floor(this.y / pxt)) + "_" + String(Math.floor(this.x / pxt))] === "wall" && word[String(Math.floor(this.y / pxt)) + "_" + String(this.coliderX2)] === "wall") {
-		console.log("up");
+		// console.log("up");
 		this.blockUP();
 	}
 	else if (word[String(Math.floor(this.y / pxt)) + "_" + String(Math.floor(this.coliderX2))] === "wall" && word[String(Math.floor(this.y / pxt)) + "_" + String(this.coliderX3)] === "wall") {
-		console.log("up1");
+		// console.log("up1");
 		this.blockUP();
 	}
 	else if (word[String(Math.floor(this.y / pxt)) + "_" + String(Math.floor(this.coliderX3))] === "wall" && word[String(Math.floor(this.y / pxt)) + "_" + String(this.coliderX1)] === "wall") {
-		console.log("up2");
+		// console.log("up2");
 		this.blockUP();
 	}
 	else if (word[String(Math.floor(this.y / pxt)) + "_" + String(Math.floor(this.x / pxt))] === "wall" && word[String(this.coliderY2) + "_" + String(Math.floor(this.x / pxt))] === "wall") {
-		console.log("LEFT");
+		// console.log("LEFT");
 		this.blockLeft();
 		this.jump = true;
 	}
 	else if (word[String(this.coliderY2) + "_" + String(Math.floor(this.x / pxt))] === "wall" && word[String(this.coliderY3) + "_" + String(Math.floor(this.x / pxt))] === "wall") {
-		console.log("LEFT1");
+		// console.log("LEFT1");
 		this.blockLeft();
 		this.jump = true;
 	}
 	else if (word[String(this.coliderY3) + "_" + String(Math.floor(this.x / pxt))] === "wall" && word[String(this.coliderY1) + "_" + String(Math.floor(this.x / pxt))] === "wall") {
-		console.log("LEFT2");
+		// console.log("LEFT2");
 		this.blockLeft();
 		this.jump = true;
 	}
 	else if (word[String(Math.floor(this.y / pxt)) + "_" + String(this.coliderX1)] === "wall" && word[String(this.coliderY2) + "_" + String(this.coliderX1)] === "wall") {
-		console.log("RIGHT");
+		// console.log("RIGHT");
 		this.blockRight();
 		this.jump = true;
 	}
 	else if (word[String(this.coliderY2) + "_" + String(this.coliderX1)] === "wall" && word[String(this.coliderY3) + "_" + String(this.coliderX1)] === "wall") {
-		console.log("RIGHT1");
+		// console.log("RIGHT1");
 		this.blockRight();
 		this.jump = true;
 	}
 	else if (word[String(this.coliderY3) + "_" + String(this.coliderX1)] === "wall" && word[String(this.coliderY1) + "_" + String(this.coliderX1)] === "wall") {
-		console.log("RIGHT2");
+		// console.log("RIGHT2");
 		this.blockRight();
 		this.jump = true;
 	};
@@ -259,7 +263,7 @@ enemy.prototype.maveUp = function () {
 	if (player.coliderTest("wall") === undefined) {
 		// this.y -= pxt / 1.5;
 		this.ySpeed -= 30;
-		console.log("WELL");
+		// console.log("WELL");
 	};
 };
 enemy.prototype.maveDown = function () {
@@ -287,9 +291,19 @@ $("body").keydown(function (event) {
 		if (keyDown === "up" && player.jump === true) {
 			player.maveUp();
 			player.jump = false;
-			console.log(false);
-			
-			bulet1.physics("right", true);
+			// console.log(false);
+			bulet1.x = player.x;
+			bulet1.y = player.y + (pxt / 2);
+			bulet1.fallSpeed = 0;
+			if (player.xSpeed > 0) {
+				// bulet1.physics("right", true);
+				bulet1.length = 100;
+				// console.log("RIGHT2");
+			}
+			else if (player.xSpeed < 0) {
+				bulet1.length = -100;
+				// console.log("LEFT");
+			};
 		};
 	};
 });
@@ -299,12 +313,13 @@ $("body").keyup(function (event) {
 bulet.prototype.physics = function (xRotetion, balistic) {
 	if (xRotetion === "right") {
 		this.x += this.speed;
-	}
-	else if (xRotetion === "left") {
+	};
+	if (xRotetion === "left") {
 		this.x -= this.speed;
 	};
 	if (balistic === true) {
-		this.y--;
+		this.y += this.fallSpeed / 25;
+		this.fallSpeed++;
 	};
 };
 enemy.prototype.physics = function () {
@@ -341,7 +356,7 @@ enemy.prototype.physics = function () {
 	else if (-this.xSpeed > 50) {
 		this.xSpeed = -48;
 	}
-	console.log(this.ySpeed + "Y");
+	// console.log(this.ySpeed + "Y");
 	// console.log(this.xSpeed + "X");
 };
 setInterval(function () {
@@ -356,7 +371,22 @@ setInterval(function () {
 	gameRender();
 	if (dev === true) {
 		player.colider();
-		bulet1.draw();
+		if (bulet1.length !== 0) {
+			bulet1.draw();
+			if (bulet1.length > 0) {
+				bulet1.physics("right", true);
+				bulet1.length--;
+			};
+			if (bulet1.length < 0) {
+				console.log("left");
+				bulet1.physics("left", true);
+				bulet1.length++;
+			};
+			if (bulet1.length === 0) {
+				bulet1.x = -10;
+				bulet1.y = -10 + (pxt / 2);
+			};
+		};
 		// grafic();
 	}
 }, 15);
